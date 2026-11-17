@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexora VPN</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080e1e;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.app{max-width:520px;margin:auto;padding:24px 18px 105px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+.logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#258bff,#7546ff);display:grid;place-items:center;font-size:27px;box-shadow:0 8px 25px #236aff55}
+.brand h2{margin:0;font-size:22px}
+.muted{color:#95a7c9;font-size:13px}
+.hero{padding:25px;border-radius:24px;background:linear-gradient(135deg,#183b78,#101c3c);border:1px solid #32558d}
+.hero h1{font-size:26px;margin:8px 0}
+.hero p{color:#b8c9e8}
+.pill{display:inline-block;padding:7px 12px;background:#ffffff19;border-radius:30px;font-size:12px}
+.btn{display:block;width:100%;border:0;border-radius:15px;background:linear-gradient(90deg,#278cff,#685bff);color:white;font-weight:700;padding:16px;font-size:15px;margin-top:16px;cursor:pointer}
+h3{margin-top:28px}
+.card{background:#141e34;border:1px solid #273a5c;border-radius:20px;padding:20px;margin:13px 0}
+.card strong{font-size:19px}
+.price{font-size:28px;font-weight:800;margin-top:12px}
+.card p{color:#a6b5d2;font-size:14px}
+.featured{border-color:#538cff;box-shadow:0 0 22px #347cff22}
+.tag{color:#7fb6ff;font-size:12px;font-weight:bold}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#101a2e;border-top:1px solid #26395a;display:flex;justify-content:space-around;padding:15px 4px max(15px,env(safe-area-inset-bottom))}
+.nav button{background:none;border:0;color:#8fa4c8;font-size:13px;cursor:pointer}
+.nav button.active{color:#65a7ff}
+.page{display:none}
+.page.active{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div><h2>NEXORA VPN</h2><span class="muted">PRIVATE • FAST • SECURE</span></div>
+  </div>
+
+  <section id="home" class="page active">
+    <div class="hero">
+      <span class="pill">✦ NEXORA PREMIUM</span>
+      <h1>Твоя цифровая свобода</h1>
+      <p>Управляй своей подпиской в одном месте.</p>
+      <button class="btn" onclick="show('plans')">💎 Выбрать тариф</button>
+    </div>
+    <h3>🔐 Статус подключения</h3>
+    <div class="card">
+      <strong>Подписка не активна</strong>
+      <p>Выбери тариф, чтобы начать пользоваться сервисом.</p>
+    </div>
+  </section>
+
+  <section id="plans" class="page">
+    <h1>💎 Наши тарифы</h1>
+    <p class="muted">Выбери подходящий период подписки</p>
+    <div class="card">
+      <strong>⚡ START</strong>
+      <p>1 месяц</p>
+      <div class="price">199 ₽</div>
+      <button class="btn" onclick="selectPlan('START')">Выбрать</button>
+    </div>
+    <div class="card featured">
+      <span class="tag">⭐ ПОПУЛЯРНЫЙ</span>
+      <h3>💎 PLUS</h3>
+      <p>3 месяца</p>
+      <div class="price">499 ₽</div>
+      <button class="btn" onclick="selectPlan('PLUS')">Выбрать</button>
+    </div>
+    <div class="card">
+      <strong>👑 ULTRA</strong>
+      <p>12 месяцев</p>
+      <div class="price">1 490 ₽</div>
+      <button class="btn" onclick="selectPlan('ULTRA')">Выбрать</button>
+    </div>
+  </section>
+
+  <section id="profile" class="page">
+    <h1>👤 Личный кабинет</h1>
+    <div class="card">
+      <p class="muted">Пользователь</p>
+      <strong id="username">Гость</strong>
+      <p>Статус: нет активной подписки</p>
+      <p>Срок действия: —</p>
+    </div>
+    <button class="btn" onclick="show('plans')">💎 Купить подписку</button>
+  </section>
+</div>
+
+<div class="nav">
+  <button class="active" data-page="home" onclick="show('home')">🏠 Главная</button>
+  <button data-page="plans" onclick="show('plans')">💎 Тарифы</button>
+  <button data-page="profile" onclick="show('profile')">👤 Кабинет</button>
+</div>
+
+<script>
+const tg=window.Telegram?.WebApp;
+if(tg){
+  tg.ready();
+  tg.expand();
+  const user=tg.initDataUnsafe?.user;
+  if(user){
+    document.getElementById('username').textContent=
+      [user.first_name,user.last_name].filter(Boolean).join(' ');
+  }
+}
+function show(id){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(el=>{
+    el.classList.toggle('active',el.dataset.page===id);
+  });
+  window.scrollTo(0,0);
+}
+function selectPlan(name){
+  alert('Тариф '+name+' выбран. Оплата пока не подключена.');
+}
+</script>
+</body>
+</html>
